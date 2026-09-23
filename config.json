@@ -1,0 +1,28 @@
+{
+	"project_name": "Wikipedia B2C Market Demand Research",
+	"period_months": 24,
+	"items": [
+		{
+			"topic": "Intermittent fasting",
+			"lang": "pl"
+		},
+		{
+			"topic": "Přerušovaný půst",
+			"lang": "cs"
+		},
+		{
+			"topic": "Астрономія",
+			"lang": "uk"
+		},
+		{
+			"topic": "Język angielski",
+			"lang": "pl"
+		},
+		{
+			"topic": "English language",
+			"lang": "tr"
+		}
+	],
+	"output_pdf": "reports/market_research_report.pdf",
+	"output_chart": "reports/market_research_chart.png"
+}
