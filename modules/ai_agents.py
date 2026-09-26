@@ -1,13 +1,12 @@
 import requests
 import json
 import os
+import sys
 from dotenv import load_dotenv
 
 load_dotenv()
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-
-import os
 
 
 def load_system_prompt(
@@ -17,20 +16,21 @@ def load_system_prompt(
     if not os.path.exists(prompt_path):
         # Дефолтный фоллбэк на случай, если файл не найден
         return (
-            "Ти — AI-оркестратор. Перетвори запит користувача на валідний JSON-конфіг. "
+            "Ти — AI-оркестратор. "
+            "Перетвори запит користувача на валідний JSON-конфіг. "
             "Повертай ТІЛЬКИ чистий JSON."
         )
 
     with open(prompt_path, "r", encoding="utf-8") as f:
         return f.read().strip()
 
+
 def call_lightweight_agent(
     user_prompt: str, prompt_file: str = "prompts/agent_system.prompt"
 ) -> dict:
-    
     # Читання промпту з окремого файлу
     system_instruction = load_system_prompt(prompt_file)
-    
+
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
@@ -58,8 +58,31 @@ def call_lightweight_agent(
         "temperature": 0.1
     }
 
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    res_data = response.json()
+    try:
+        response = requests.post(
+            url, headers=headers, data=json.dumps(payload), timeout=15
+        )
+        response.raise_for_status()
 
-    content = res_data["choices"][0]["message"]["content"]
-    return json.loads(content)
+        res_data = response.json()
+        content = res_data["choices"][0]["message"]["content"]
+
+        # Очистка від можливих Markdown-обгорток
+        if content.startswith("```"):
+            content = content.strip("`").removeprefix("json").strip()
+
+        return json.loads(content)
+
+    except Exception as e:
+        print(
+            json.dumps(
+                {
+                    "status": "error",
+                    "message":
+                        "Помилка генерації конфігу через OpenRouter: "
+                        f"{str(e)}",
+                },
+                ensure_ascii=False,
+            )
+        )
+        sys.exit(1)
