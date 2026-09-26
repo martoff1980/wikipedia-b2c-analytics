@@ -3,6 +3,27 @@
 Аналіз інтересу потенційної B2C-аудиторії на основі статистики переглядів Wikipedia AQS API. Оцінка трендів, порівняння ринків/мов, розрахунок надійності даних, генерація графіків та PDF-звітів на 1
 сторінку.
 
+Структура проекту:
+
+```text
+wikipedia-b2c-analytics/
+├── reports/
+├── prompts/
+│   └── agent_system.prompt  # Системний промпт
+├── modules/
+│   ├── __init__.py
+│   ├── ai_agents.py         # Моделі та промпти
+│   ├── fetch_pageviews.py   # Збір даних
+│   ├── analyze_trends.py    # Обробка даних
+│   └── generate_report.py   # Генератор звітів
+├── .env                     # OPENROUTER_API_KEY
+├── .gitignore
+├── requirements.txt
+├── SKILL.md
+├── config.json
+└── run_analysis.py          # Основний скрипт
+```
+
 ### Створення віртуального середовища для `Windows`
 
 ```bash
