@@ -100,3 +100,12 @@ python run_analysis.py --queries config.json
 - [ ] **Google Trends Correlation:** Валідація комерційного інтересу шляхом розрахунку кореляції Пірсона між Wikipedia Pageviews та даними Google Trends (`pytrends`).
 - [ ] **Cross-platform Signals:** Додавання зовнішніх джерел (PyPI downloads, App Store Search Trends, GitHub Stars) для розрахунку единого Composite Demand Index.
 - [ ] **Auto-Generated Executive Insights:** Інтеграція LLM-сумаризації для генерації розширених текстовых рекомендацій для B2C-продуктів у PDF-звіті.
+
+## Оптимізація для легких моделей (Claude Haiku / GPT-4o-mini / Free Models)
+
+Для забезпечення мінімальної вартості та високої швидкості виконання:
+
+1. **Строгий очікуваний формат:** Скрипт приймає JSON-строку або шлях до файлу. Агент НЕ повинен додавать пояснювальний текст навколо JSON-об'єкта.
+2. **Deterministic Outputs:** При формуванні аргументів `--queries` використовуйте `temperature: 0.0-0.2`.
+3. **Обробка помилок:** Якщо легка модель сформувала некоректний JSON, використовуйте `parse_queries_input` із `run_analysis.py`, який поверне зрозумілу помилку з кодом `status: "error"`, дозволяючи
+   агенту зробити один повторний виклик (Retry Loop).
