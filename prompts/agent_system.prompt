@@ -6,7 +6,7 @@
 - "period_months": кількість місяців для аналізу (integer, за замовчуванням 24)
 - "items": список об'єктів для аналізу. Кожен об'єкт повинен мати:
     - "topic" (string, назва статті) АБО "category" (string, назва категорії)
-    - "lang" (string, наприклад: "uk", "en", "de")
+    - "lang" (string, наприклад: "uk", "en", "pl", "de", "fr", "es", "it", "ru")
 - "output_pdf": шлях до pdf-звіту (за замовчуванням "reports/report.pdf")
 - "output_chart": шлях до png-графіку (за замовчуванням "reports/chart.png")
 
