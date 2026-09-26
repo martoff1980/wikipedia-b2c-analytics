@@ -397,7 +397,7 @@ def demo_with_ai_agents():
 
     # Генерація артефактів (Графік з прогнозом + PDF)
     try:
-        generate_chart(data_map, forecast_map, output_chart)
+        generate_chart_forecast(data_map, forecast_map, output_chart)
         generate_pdf_report(
             project_name, summary_results, output_chart, output_pdf
         )
