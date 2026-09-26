@@ -7,8 +7,30 @@ load_dotenv()
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
+import os
 
-def call_lightweight_agent(user_prompt: str) -> dict:
+
+def load_system_prompt(
+    prompt_path: str = "prompts/agent_system.prompt",
+) -> str:
+    """Завантаження системного промпту з потрібного файлу."""
+    if not os.path.exists(prompt_path):
+        # Дефолтный фоллбэк на случай, если файл не найден
+        return (
+            "Ти — AI-оркестратор. Перетвори запит користувача на валідний JSON-конфіг. "
+            "Повертай ТІЛЬКИ чистий JSON."
+        )
+
+    with open(prompt_path, "r", encoding="utf-8") as f:
+        return f.read().strip()
+
+def call_lightweight_agent(
+    user_prompt: str, prompt_file: str = "prompts/agent_system.prompt"
+) -> dict:
+    
+    # Читання промпту з окремого файлу
+    system_instruction = load_system_prompt(prompt_file)
+    
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
@@ -29,15 +51,7 @@ def call_lightweight_agent(user_prompt: str) -> dict:
             "meta-llama/llama-3.3-70b-instruct:free"
         ],
         "messages": [
-            {
-                "role": "system",
-                "content": (
-                    "Ти — AI-асистент. "
-                    "Твоє завдання — перетворити запит користувача "
-                    "на валідний JSON-конфіг для аналізу ринку. "
-                    "Повертай ТІЛЬКИ JSON без додаткового тексту чи Markdown."
-                )
-            },
+            {"role": "system", "content": system_instruction},
             {"role": "user", "content": user_prompt}
         ],
         # Низька температура для стабільності структури
