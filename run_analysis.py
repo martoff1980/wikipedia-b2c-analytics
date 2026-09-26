@@ -319,23 +319,27 @@ def demo_with_ai_agents():
     project_name = config.get("project_name", "B2C Research")
     months = config.get("period_months", 24)
     items = config.get("items", [])
-    output_pdf = Path(config.get(
-        "output_pdf", "reports/market_research_report.pdf"
-        )
-    )
     
-    output_pdf = str(output_pdf.with_name(
-        f"{output_pdf.stem}_with_ai_agents{output_pdf.suffix}"
-        )
-    )
+    output_pdf = config.get("output_pdf", "reports/report.pdf")
+    output_chart = config.get("output_chart", "reports/chart.png")
 
-    output_chart = Path(config.get(
-        "output_chart", "reports/market_research_report.png"
-        )
-    )
-    output_chart = output_chart.with_name(
-        f"{output_chart.stem}_with_ai_agents{output_chart.suffix}"
-    )
+    # output_pdf = Path(config.get(
+    #     "output_pdf", "reports/market_research_report.pdf"
+    #     )
+    # )
+    
+    # output_pdf = str(output_pdf.with_name(
+    #     f"{output_pdf.stem}_with_ai_agents{output_pdf.suffix}"
+    #     )
+    # )
+
+    # output_chart = Path(config.get(
+    #     "output_chart", "reports/market_research_report.png"
+    #     )
+    # )
+    # output_chart = output_chart.with_name(
+    #     f"{output_chart.stem}_with_ai_agents{output_chart.suffix}"
+    # )
 
     if not items:
         print(
@@ -397,7 +401,7 @@ def demo_with_ai_agents():
 
     # Генерація артефактів (Графік з прогнозом + PDF)
     try:
-        generate_chart(data_map, forecast_map, output_chart)
+        generate_chart_forecast(data_map, forecast_map, output_chart)
         generate_pdf_report(
             project_name, summary_results, output_chart, output_pdf
         )
@@ -426,6 +430,6 @@ def demo_with_ai_agents():
     print("========================================")
 
 if __name__ == "__main__":
-    demo_validation_log()
-    demo_future_scale()
+    # demo_validation_log()
+    # demo_future_scale()
     demo_with_ai_agents()
